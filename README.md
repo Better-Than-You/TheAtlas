@@ -1,13 +1,13 @@
 <p align="center">
 <a href="https://github.com/FantoX/Atlas-MD">
-    <img src="https://i.imgur.com/MClOeqe.jpeg">
+    <img src="https://graph.org/file/a5a79ef17bed3328824d8.jpg">
   </a>
 
 <h1 align="center"> Atlas MD
 </h1>
 
 <p align="center"> 
-This is My-Atlas a bot modified and further developed by <a href="https://github.com/Better-Than-You">FantoX</a> 
+This is My-Atlas a bot modified and further developed by <a href="https://github.com/Better-Than-You">Better-Than-You</a> 
 <h3 align="center"> My Atlas - Working
 </h4>
 
