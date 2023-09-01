@@ -1,4 +1,4 @@
-const { proto, delay, getContentType } = require("../BaileysJS/lib");
+const { proto, delay, getContentType } = require("baileysjs");
 const chalk = require("chalk");
 const fs = require("fs");
 const { unlink } = require("fs").promises;
@@ -97,7 +97,7 @@ exports.sleep = async (ms) => {
 exports.isUrl = (url) => {
   return url.match(
     new RegExp(
-      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/,
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%+.~#?&/=]*)/,
       "gi"
     )
   );
@@ -210,6 +210,71 @@ exports.bytesToSize = (bytes, decimals = 2) => {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 };
+
+
+exports.cap = (str) => {
+    return str[0].toUpperCase() + str.slice(1);
+}
+
+exports.typeSync = (x)=> {
+    switch(x) {
+       case 'Normal':
+        return `⚪${x}⚪`;
+        break;
+      case 'Fire':
+        return `🔥${x}🔥`; 
+        break;
+      case 'Water':
+        return `🌊${x}🌊`;
+        break;
+      case 'Psychic':
+        return `🔮${x}🔮`;
+        break;
+      case 'Ghost':
+        return `👻${x}👻`;
+        break;
+      case 'Grass':
+        return `🥀${x}🥀`;
+        break;
+      case 'Bug':
+        return `🐛${x}🐛`;
+        break;
+      case 'Electric':
+        return `⚡${x}⚡`;
+        break;
+      case 'Steel':
+        return `🔗${x}🔗`;
+        break;
+      case 'Rock':
+        return `🗿${x}🗿`;
+        break;
+      case 'Dragon':
+        return `🐉${x}🐉`;
+        break;
+      case 'Flying':
+        return `🪽${x}🪽`;
+        break;
+      case 'Dark':
+        return `♠️${x}♠️`;
+        break;
+      case 'Fairy':
+        return `🦄${x}🦄`;
+        break;
+      case 'Fighting':
+        return `💪${x}💪`;
+        break;    
+      case 'Ice':
+        return `🧊${x}🧊`;
+        break;
+      case 'Ground':
+        return `🌏${x}🌏`;
+        break;
+      case 'Poison':
+        return `☠️${x}☠️`;
+        break;     
+    }    
+ 
+}
 
 exports.getSizeMedia = (path) => {
   return new Promise((resolve, reject) => {
@@ -407,87 +472,3 @@ fs.watchFile(file, () => {
   delete require.cache[file];
   require(file);
 });
-exports.cap = (str) => {
-    return str[0].toUpperCase() + str.slice(1);
-}
-exports.tpFormat = (str) => {
-    if (!str.includes(", ")) {
-        return `    *${typeSync(cap(str))}*`;
-    } else {
-     let words = str.split(', ');
-    let type1 = typeSync(cap(words[0]));
-    let type2 = typeSync(cap(words[1]));
-    return `    _1._  *${type1}*
-                  _2._    *${type2}*`;   
-    }
-    
-};
-exports.abFormat = (str)=>{
-    if (!str.includes(", ")) {
-        return `    *${cap(str)}*`;
-    } else {
-       let words = str.split(', ');
-    let ab1 = cap(words[0]);
-    let ab2 = cap(words[1]);
-    return `    *${ab1}*   _or,_   *${ab2}*`; 
-    }   
-}
-exports.typeSync = (x)=> {
-    switch(x) {
-       case 'Normal':
-        return `⚪${x}⚪`;
-        break;
-      case 'Fire':
-        return `🔥${x}🔥`; 
-        break;
-      case 'Water':
-        return `🌊${x}🌊`;
-        break;
-      case 'Psychic':
-        return `🔮${x}🔮`;
-        break;
-      case 'Ghost':
-        return `👻${x}👻`;
-        break;
-      case 'Grass':
-        return `🥀${x}🥀`;
-        break;
-      case 'Bug':
-        return `🐛${x}🐛`;
-        break;
-      case 'Electric':
-        return `⚡${x}⚡`;
-        break;
-      case 'Steel':
-        return `🔗${x}🔗`;
-        break;
-      case 'Rock':
-        return `🗿${x}🗿`;
-        break;
-      case 'Dragon':
-        return `🐉${x}🐉`;
-        break;
-      case 'Flying':
-        return `🪽${x}🪽`;
-        break;
-      case 'Dark':
-        return `♠️${x}♠️`;
-        break;
-      case 'Fairy':
-        return `🦄${x}🦄`;
-        break;
-      case 'Fighting':
-        return `💪${x}💪`;
-        break;    
-      case 'Ice':
-        return `🧊${x}🧊`;
-        break;
-      case 'Ground':
-        return `🌏${x}🌏`;
-        break;
-      case 'Poison':
-        return `☠️${x}☠️`;
-        break;     
-    }    
- 
-}
