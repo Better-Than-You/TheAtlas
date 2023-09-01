@@ -1,9 +1,9 @@
 <p align="center">
-<a href="https://github.com/FantoX/Atlas-MD">
+<a href="https://github.com/Better-Than-You/My-Atlas">
     <img src="https://graph.org/file/a5a79ef17bed3328824d8.jpg">
   </a>
 
-<h1 align="center"> Atlas MD
+<h1 align="center"> My Atlas
 </h1>
 
 <p align="center"> 
