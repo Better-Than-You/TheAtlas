@@ -257,7 +257,7 @@ module.exports = {
   let arrLength = arr.length;
   let data = arr[getRandomInt(0,arrLength)];
   let textt = `    _Word:_ *${text[0].toUpperCase()+text.slice(1)}*\n\n    _Definition:_ ${data.definition.replaceAll('[','*').replaceAll(']','*')}\n\n    _Example:_ ${data.example.replaceAll('[','*').replaceAll(']','*')}`;
-  doReact(📖);
+  doReact('📖');
   return m.reply(textt);
 }).catch(e=>{
    doReact('❔'); 
