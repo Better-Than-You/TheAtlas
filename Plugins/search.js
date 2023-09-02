@@ -19,6 +19,7 @@ let mergedCommands = [
   "gh",
   "urban",
   "define",
+  "rword",
 ];
 
 module.exports = {
@@ -33,6 +34,7 @@ module.exports = {
     "weather",
     "github",
     "define",
+    "rword",
   ],
   description: "All picture related commands",
   start: async (Atlas, m, { inputCMD, text, doReact, prefix, pushName }) => {
@@ -256,7 +258,7 @@ module.exports = {
   let arr = res.data.list;
   let arrLength = arr.length;
   let data = arr[getRandomInt(0,arrLength)];
-  let textt = `    _Word:_ *${text[0].toUpperCase()+text.slice(1)}*\n\n    _Definition:_ ${data.definition.replaceAll('[','*').replaceAll(']','*')}\n\n    _Example:_ ${data.example.replaceAll('[','*').replaceAll(']','*')}`;
+  let textt = `    _Word:_ *${text[0].toUpperCase()+text.slice(1)}*\n\n    _Definition:_ \n${data.definition.replaceAll('[','*').replaceAll(']','*')}\n\n    _Example:_ \n${data.example.replaceAll('[','*').replaceAll(']','*')}`;
   doReact('📖');
   return m.reply(textt);
 }).catch(e=>{
@@ -264,6 +266,17 @@ module.exports = {
    return m.reply(e.message);
 });
    break;
+      case 'rword':        
+axios.get(`https://api.urbandictionary.com/v0/random`).then(res=>{
+  let data = res.data;
+  let rtext = `    _Random Word:_ *${data.list[0].word.toUpperCase()+data.list[0].word.slice(1)}*\n\n    _Definition:_\n ${data.list[0].definition.replaceAll('[','*').replaceAll(']','*')}\n\n    _Example:_\n ${data.list[0].example.replaceAll('[','*').replaceAll(']','*')}`;
+  doReact('🌐');
+  return m.reply(rtext);
+}).catch(e=>{
+    doReact('❔'); 
+   return m.reply(e.message);
+});
+        break;
       default:
         break;
     }
