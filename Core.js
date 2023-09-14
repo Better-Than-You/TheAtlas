@@ -149,10 +149,13 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     var botWorkMode = await getBotMode();
 
     if (isAutoOn && !isCmd) {
+      if (body.includes('oooo')) {
+        return doReact("😮");
+      }
       return doReact("🐦");
     }
     if (isCmd || icmd) {
-      if (isLocked && !isCreator) {
+      if (isLocked && !isCreator && !modcheck) {
         return m.reply(`This command is currently locked for users.`);
       }
     }
