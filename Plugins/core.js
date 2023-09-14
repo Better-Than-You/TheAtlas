@@ -77,7 +77,7 @@ module.exports = {
               file.replace(".js", "").charAt(0).toUpperCase() +
               file.replace(".js", "").slice(1);
 
-            formatted += `🔳     *${capitalizedFile}*      🔳\n`;
+            formatted += `♠️ *${capitalizedFile}* ♠️\n`;
             formatted += `\`\`\`${commands.join(", ")}\`\`\`\n\n\n`;
             // Adding a - before each command
             
@@ -90,7 +90,7 @@ module.exports = {
 
         const allCommands = readUniqueCommands(pluginsDir);
         const formattedCommands = formatCommands(allCommands);
-        var helpText = `\nHello *${pushName}*, This is the help menu.\n*🔖 My Prefix is:*  ${prefix}\n\n*⛩️ Current character is set to:* ${botName}\n\nThese are my command list-\n\n*${formattedCommands}\n\n\n*©️ Sujatro🐦*`;
+        var helpText = `\nHello *${pushName}*, This is the help menu.\n*🔖 *Prefix*: [ ${prefix} ]\n*⛩️ Current character is set to:* ${botName}\n\nThese are my command list-\n*${formattedCommands}\n\n\n*©️ Sujatro🐦*`;
         await Atlas.sendMessage(
           m.from,
           { video: { url: botVideo }, gifPlayback: true, caption: helpText },
