@@ -17,6 +17,14 @@ async function actAuto(userId) {
   }
   await userData.findOneAndUpdate({ id: userId }, { $set: { react: true } });
 }
+//Check Auto-React
+async function checkAutoOn(userId) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {
+    return false;
+  }
+  return user.react;
+}
 //Deactivate Auto-React
 async function deactAuto(userId) {
   const user = await userData.findOne({ id: userId });
