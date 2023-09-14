@@ -3,8 +3,42 @@ const {
   groupData,
   systemData,
   pluginData,
+  commandData,
 } = require("../MongoDB/MongoDB_Schema.js");
 const mongoose = require("mongoose");
+
+//Lock command
+async function lock(cmdId) {
+  const command = await commandData.findOne({ id: cmdId });
+  if (!command) {
+    await commandData.create({ id: cmdId, lock: true });
+    return;
+  }
+  if (command.lock) {
+    return;
+  }
+  await commandData.findOneAndUpdate({ id: cmdId }, { $set: { lock: true } });
+}
+//Check Lock
+async function checkLock(cmdId) {
+  const command = await commandData.findOne({ id: cmdId });
+  if (!command) {
+    return false;
+  }
+  return command.lock;
+}
+//Unlock cmd
+async function unlock(cmdId) {
+  const command = await commandData.findOne({ id: cmdId });
+  if (!command) {
+    await commandData.create({ id: cmdId, lock: false });
+    return;
+  }
+  if (!command.react) {
+    return;
+  }
+  await commandData.findOneAndUpdate({ id: cmdId }, { $set: { lock: false } });
+}
 //Activate Auto-React
 async function actAuto(userId) {
   const user = await userData.findOne({ id: userId });
@@ -407,6 +441,9 @@ module.exports = {
   banUser, //----------------------- BAN
   checkBan, // --------------------- CHECK BAN STATUS
   unbanUser, // -------------------- UNBAN
+  lock, // -------------------- LOCK COMMAND
+  checkLock, // CHECK LOCK STATUS OF COMMAND
+  unlock, // -------------------- UNLOCK COMMAND
   actAuto, //  --------------------- ACTIVATE AUTO-REACT 
   checkAutoOn, //  --------------------- CHECK AUTO-REACT STATUS
   deactAuto, //  --------------------- DEACTIVATE AUTO-REACT
