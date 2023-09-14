@@ -138,13 +138,16 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
 
     var isbannedUser = await checkBan(m.sender);
     var modcheck = await checkMod(m.sender);
+    var isAutoOn = await checkAuto(m.sender);
     var isBannedGroup = await checkBanGroup(m.from);
     var isAntilinkOn = await checkAntilink(m.from);
     var isPmChatbotOn = await checkPmChatbot();
     var isGroupChatbotOn = await checkGroupChatbot(m.from);
     var botWorkMode = await getBotMode();
 
-    
+    if (isAutoOn && !isCmd) {
+      return doReact("🐦");
+    }
     if (isCmd || icmd) {
       if (botWorkMode == "private") {
         if (!isCreator && !modcheck) {
