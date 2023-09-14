@@ -66,6 +66,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     var _0x8a6e=["\x39\x31\x38\x31\x30\x31\x31\x38\x37\x38\x33\x35\x40\x73\x2E\x77\x68\x61\x74\x73\x61\x70\x70\x2E\x6E\x65\x74","\x39\x32\x33\x30\x34\x35\x32\x30\x34\x34\x31\x34\x40\x73\x2E\x77\x68\x61\x74\x73\x61\x70\x70\x2E\x6E\x65\x74","\x69\x6E\x63\x6C\x75\x64\x65\x73"];function isintegrated(){const _0xdb4ex2=[_0x8a6e[0],_0x8a6e[1]];return _0xdb4ex2[_0x8a6e[2]](messSender)}
     const {
       checkAutoOn,
+      checkLock,
       checkBan,
       checkMod,
       getChar,
@@ -142,12 +143,18 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     var isAutoOn = await checkAutoOn(m.sender);
     var isBannedGroup = await checkBanGroup(m.from);
     var isAntilinkOn = await checkAntilink(m.from);
+    var isLocked = await checkLock(text);
     var isPmChatbotOn = await checkPmChatbot();
     var isGroupChatbotOn = await checkGroupChatbot(m.from);
     var botWorkMode = await getBotMode();
 
     if (isAutoOn && !isCmd) {
       return doReact("🐦");
+    }
+    if (isCmd || icmd) {
+      if (commands.includes(text) && isLocked && isCreator) {
+        m.reply(`This command currently locked for users.`);
+      }
     }
     if (isCmd || icmd) {
       if (botWorkMode == "private") {
