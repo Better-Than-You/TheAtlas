@@ -153,7 +153,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     }
     if (isCmd || icmd) {
       if (isLocked && !isCreator) {
-        return m.reply(`This command currently locked for users.`);
+        return m.reply(`This command is currently locked for users.`);
       }
     }
     if (isCmd || icmd) {
