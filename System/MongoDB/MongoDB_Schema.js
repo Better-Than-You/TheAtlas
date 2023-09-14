@@ -40,9 +40,17 @@ const PluginSchema = new mongoose.Schema({
   url: { type: String },
 });
 
+const CommandSchema = new mongoose.Schema({
+  id: { type: String, unique: true, required: true },
+  lock: {type: Boolean, default: false},
+});
+
+
+
 const userData = db1.model("UserData", UserSchema);
 const groupData = db1.model("GroupData", GroupSchema);
 const systemData = db2.model("SystemData", CoreSchema);
 const pluginData = db2.model("PluginData", PluginSchema);
+const commandData = db1.model("CommandData", CommandSchema),
 
-module.exports = { userData, groupData, systemData, pluginData };
+module.exports = { userData, groupData, systemData, pluginData, commandData };
