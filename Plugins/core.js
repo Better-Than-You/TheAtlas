@@ -36,13 +36,13 @@ module.exports = {
         return time = `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
         };
         const uptime = () => formatTime(process.uptime());
-        await Atlas.sendMessage(m.from,{image:{url:botImage1},caption:`\nHi ${pushName}, this is a Whatsapp bot. Accessing to Bot-Commands requires a *prefix* at the start.\n\n_⛩️ My prefix is:_ ${prefix}\n\nType *${prefix}help* to get my full command list.\n\n_🧩 Server Uptime:_ *${uptime()}*\n_🎀 Status:_ *Working*\n`},{quoted:m});  
+        await Atlas.sendMessage(m.from,{image:{url:botImage1},caption:`\nHi ${pushName}, this is a Whatsapp bot. Accessing to Bot-Commands requires a *prefix* at the start.\n\n_⛩️ My prefix is:_ ${prefix}\n\nType *${prefix}help* to get my full command list.\n\n_🧩 Server Uptime:_ *${uptime()}*`},{quoted:m});  
         break;
         
       case "help":
       case "h":
       case "menu":
-        await doReact("☃️");
+        await doReact("📜");
         await Atlas.sendPresenceUpdate("composing", m.from);
         function readUniqueCommands(dirPath) {
           const allCommands = [];
@@ -77,12 +77,10 @@ module.exports = {
               file.replace(".js", "").charAt(0).toUpperCase() +
               file.replace(".js", "").slice(1);
 
-            formatted += `╟   🏮 *${capitalizedFile}* 🏮   ╢\n\n`;
-            //formatted += `\`\`\`${commands.join("\n")}\`\`\`\n\n\n`;
+            formatted += `🔳     *${capitalizedFile}*      🔳\n`;
+            formatted += `\`\`\`${commands.join(", ")}\`\`\`\n\n\n`;
             // Adding a - before each command
-            formatted += `\`\`\`${commands
-              .map((cmd) => `⥼   ${prefix + cmd}`)
-              .join("\n")}\`\`\`\n\n\n`;
+            
           }
 
           return formatted.trim();
@@ -92,7 +90,7 @@ module.exports = {
 
         const allCommands = readUniqueCommands(pluginsDir);
         const formattedCommands = formatCommands(allCommands);
-        var helpText = `\nHello *${pushName}*, This is a WhatsApp bot.\n*Keep in mind that this is still my number and I am hosting a bot in it.*\n\n*🔖 My Prefix is:*  ${prefix}\n\n*⛩️ Current character is set to:* ${botName}\n\n${formattedCommands}\n\n\n*©️ Sujatro🐦*`;
+        var helpText = `\nHello *${pushName}*, This is the help menu.\n*🔖 My Prefix is:*  ${prefix}\n\n*⛩️ Current character is set to:* ${botName}\n\nThese are my command list-\n\n*${formattedCommands}\n\n\n*©️ Sujatro🐦*`;
         await Atlas.sendMessage(
           m.from,
           { video: { url: botVideo }, gifPlayback: true, caption: helpText },
