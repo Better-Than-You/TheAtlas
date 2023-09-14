@@ -22,6 +22,7 @@ const GroupSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   id: { type: String, unique: true, required: true },
+  react: { type: Boolean, default: false },
   ban: { type: Boolean, default: false },
   name: { type: String },
   addedMods: { type: Boolean, default: false },
