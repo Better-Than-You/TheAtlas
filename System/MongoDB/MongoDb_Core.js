@@ -5,6 +5,30 @@ const {
   pluginData,
 } = require("../MongoDB/MongoDB_Schema.js");
 const mongoose = require("mongoose");
+//Activate Auto-React
+async function actAuto(userId) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {
+    await userData.create({ id: userId, react: true });
+    return;
+  }
+  if (user.react) {
+    return;
+  }
+  await userData.findOneAndUpdate({ id: userId }, { $set: { react: true } });
+}
+//Deactivate Auto-React
+async function deactAuto(userId) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {
+    await userData.create({ id: userId, react: false });
+    return;
+  }
+  if (!user.react) {
+    return;
+  }
+  await userData.findOneAndUpdate({ id: userId }, { $set: { react: false } });
+}
 // BAN USER
 async function banUser(userId) {
   const user = await userData.findOne({ id: userId });
