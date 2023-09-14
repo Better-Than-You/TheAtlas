@@ -407,7 +407,7 @@ module.exports = {
   banUser, //----------------------- BAN
   checkBan, // --------------------- CHECK BAN STATUS
   unbanUser, // -------------------- UNBAN
-  actauto, //  --------------------- ACTIVATE AUTO-REACT 
+  actAuto, //  --------------------- ACTIVATE AUTO-REACT 
   checkAutoOn, //  --------------------- CHECK AUTO-REACT STATUS
   deactAuto, //  --------------------- DEACTIVATE AUTO-REACT
   addMod, // ----------------------- ADD MOD
