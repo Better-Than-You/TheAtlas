@@ -34,7 +34,7 @@ async function unlock(cmdId) {
     await commandData.create({ id: cmdId, lock: false });
     return;
   }
-  if (!command.react) {
+  if (!command.lock) {
     return;
   }
   await commandData.findOneAndUpdate({ id: cmdId }, { $set: { lock: false } });
