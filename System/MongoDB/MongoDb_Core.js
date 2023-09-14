@@ -5,6 +5,38 @@ const {
   pluginData,
 } = require("../MongoDB/MongoDB_Schema.js");
 const mongoose = require("mongoose");
+//Activate Auto-React
+async function actAuto(userId) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {
+    await userData.create({ id: userId, react: true });
+    return;
+  }
+  if (user.react) {
+    return;
+  }
+  await userData.findOneAndUpdate({ id: userId }, { $set: { react: true } });
+}
+//Check Auto-React
+async function checkAutoOn(userId) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {
+    return false;
+  }
+  return user.react;
+}
+//Deactivate Auto-React
+async function deactAuto(userId) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {
+    await userData.create({ id: userId, react: false });
+    return;
+  }
+  if (!user.react) {
+    return;
+  }
+  await userData.findOneAndUpdate({ id: userId }, { $set: { react: false } });
+}
 // BAN USER
 async function banUser(userId) {
   const user = await userData.findOne({ id: userId });
@@ -375,6 +407,9 @@ module.exports = {
   banUser, //----------------------- BAN
   checkBan, // --------------------- CHECK BAN STATUS
   unbanUser, // -------------------- UNBAN
+  actauto, //  --------------------- ACTIVATE AUTO-REACT 
+  checkAutoOn, //  --------------------- CHECK AUTO-REACT STATUS
+  deactAuto, //  --------------------- DEACTIVATE AUTO-REACT
   addMod, // ----------------------- ADD MOD
   checkMod, // --------------------- CHECK MOD STATUS
   delMod, // ----------------------- DEL MOD
