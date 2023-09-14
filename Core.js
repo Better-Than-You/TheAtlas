@@ -143,7 +143,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     var isAutoOn = await checkAutoOn(m.sender);
     var isBannedGroup = await checkBanGroup(m.from);
     var isAntilinkOn = await checkAntilink(m.from);
-    var isLocked = await checkLock(text);
+    var isLocked = await checkLock(inputCMD);
     var isPmChatbotOn = await checkPmChatbot();
     var isGroupChatbotOn = await checkGroupChatbot(m.from);
     var botWorkMode = await getBotMode();
@@ -152,8 +152,8 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
       return doReact("🐦");
     }
     if (isCmd || icmd) {
-      if (commands.includes(text) && isLocked && isCreator) {
-        m.reply(`This command currently locked for users.`);
+      if (isLocked && !isCreator) {
+        return m.reply(`This command currently locked for users.`);
       }
     }
     if (isCmd || icmd) {
