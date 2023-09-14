@@ -27,7 +27,6 @@
   "homepage": "https://github.com/FantoX/Atlas-MD#readme",
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
-    "@7thraone/instagramdl": "^1.0.0",
     "@fantox01/lyrics-scraper": "^1.0.1",
     "@hapi/boom": "^10.0.1",
     "@napi-rs/canvas": "^0.1.41",
@@ -49,6 +48,7 @@
     "forever": "^4.0.3",
     "forever-monitor": "^1.5.2",
     "form-data": "^4.0.0",
+    "fs": "^0.0.1-security",
     "fs-extra": "^11.1.1",
     "g-i-s": "^2.1.6",
     "google-it": "^1.6.4",
