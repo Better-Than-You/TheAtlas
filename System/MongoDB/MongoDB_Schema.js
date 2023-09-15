@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema({
   id: { type: String, unique: true, required: true },
   react: { type: Boolean, default: false },
   ban: { type: Boolean, default: false },
+  reason: { type: String, default: 'No reason provided'},
   name: { type: String },
   addedMods: { type: Boolean, default: false },
   afk: { type: Boolean, default: false },

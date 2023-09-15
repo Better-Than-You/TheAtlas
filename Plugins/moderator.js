@@ -313,8 +313,10 @@ module.exports = {
           );
         } else if (m.quoted) {
           var mentionedUser = m.quoted.sender;
+          var reason = args[0] ? 'No reason provided' : args[0];
         } else {
           var mentionedUser = mentionByTag[0];
+          var reason = args[1] ? 'No reason provided' : args[1];
         }
         chechSenderModStatus = await checkMod(m.sender);
         if (!chechSenderModStatus && !isCreator) {
@@ -344,7 +346,7 @@ module.exports = {
             { quoted: m }
           );
         } else {
-          banUser(userId).then(async () => {
+          banUser(userId, reason).then(async () => {
             await doReact("✅");
             await Atlas.sendMessage(
               m.from,

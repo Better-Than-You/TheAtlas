@@ -23,7 +23,7 @@ module.exports = async (Atlas, anu) => {
           }\n`
         );
         Atlastext = `
-Hello @${WAuserName.split("@")[0]} Senpai,
+Hello @${WAuserName.split("@")[0]},
 
 Welcome to *${metadata.subject}*.
 

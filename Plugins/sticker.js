@@ -246,7 +246,8 @@ module.exports = {
           }
         }
         await doReact("📮");
-        var waUserName = pushName;
+        
+        var waUserName = m.quoted ? m.quoted.pushName : m.pushName;
 
         const quoteText = m.quoted ? m.quoted.msg : args ? args.join(" ") : "";
 

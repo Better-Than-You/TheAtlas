@@ -167,7 +167,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
       const AFKmsg= afkText(m.sender);
       const AFKtime= afkTime(m.sender);
       afkOff(m.sender);      
-      return Atlas.sendMessage(m.sender, {text: `${pushName} has came back.\n${AFKmsg}\n${AFKtime}`}, {quoted: m})
+      return Atlas.sendMessage(m.sender, {text: `${m.pushName} has came back.\n${AFKmsg}\n${AFKtime}`}, {quoted: m})
     }
     if (isAutoOn && !isCmd) {
       if (body.includes('oooo')) {
