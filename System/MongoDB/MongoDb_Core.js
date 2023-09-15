@@ -528,6 +528,7 @@ module.exports = {
   unbanUser, // -------------------- UNBAN
   goAfk, // -------------------- GOING AFK
   checkAfk, // -------------------- CHECK AFK STATUS
+  afkOff, // ----------------------- RETURNING FROM AFK
   afkText, //  -------------------- AFK TEXT
   afkTime, //  -------------------- AFK TIME
   lock, // -------------------- LOCK COMMAND
