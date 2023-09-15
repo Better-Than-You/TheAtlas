@@ -49,12 +49,12 @@ async function afkTime(userId) {
    const currentTime = new Date();
    const afkTime = user.afkTime; 
    const timeDifference = currentTime - afkTime;
-  if (!afktime) {
+  if (!afkTime) {
     return 'AFK time: 0s';
   }
   const totalSeconds = (timeDifference/1000);
   const formattedTime = secondsToDhms(totalSeconds);
-  return `Time: ${formattedTime}`;
+  return `AFK time: ${formattedTime}`;
 }
 
 //Check AFK
