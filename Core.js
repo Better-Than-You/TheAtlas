@@ -160,7 +160,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
           afkText = '';
         } else {
         afkText = text; }
-        doReact('');       
+        doReact('📵');       
         goAfk(m.sender, afkText)
         return m.reply(`The *Afk Message* has been successfully updated.\n\n*Afk timer has been reset*`)
       }
@@ -174,7 +174,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
         return doReact("😮");
       }
       if (isMedia) {
-        return doReact("😮");
+        return doReact("🐧");
       }    
       return doReact("🐦");
     }
