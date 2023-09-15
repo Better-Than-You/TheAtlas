@@ -41,7 +41,7 @@ async function afkText(userId) {
   if (!afktxt) {
     return '';
   }
-  return `Reason for AFK: *${afktext}*`;
+  return `Reason for AFK: *${afktxt}*`;
 }
 //AFK TIME
 async function afkTime(userId) {
