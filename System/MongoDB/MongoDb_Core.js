@@ -18,8 +18,45 @@ async function goAfk(userId, string) {
     await userData.findOneAndUpdate({ id: userId }, { $set: { afkTime: new Date() } })
     return;
   }
-  await userData.findOneAndUpdate({ id: userId }, { $set: { afk: true } }, { $set: { afkMessage: string } }, { $set: { afkTime: new Date() } });
+  await userData.findOneAndUpdate({ id: userId }, { $set: { afk: true } });
+  await userData.findOneAndUpdate({ id: userId }, { $set: { afkMessage: string } });
+  await userData.findOneAndUpdate({ id: userId }, { $set: { afkTime: new Date() } });
 }
+//Afkoff
+async function afkOff(userId) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {    
+    await userData.create({ id: userId, afk: false, afkMessage: '', afkTime: 0 });
+    return;
+  }
+    await userData.findOneAndUpdate({ id: userId }, { $set: { afk: false } });
+    await userData.findOneAndUpdate({ id: userId }, { $set: { afkMessage: '' } });
+    await userData.findOneAndUpdate({ id: userId }, { $set: { afkTime: 0 } });    
+    return;
+}
+//Afk text
+async function afkText(userId) {
+  const user = await userData.findOne({ id: userId });
+  const afktxt = user.afkMessage;
+  if (!afktxt) {
+    return '';
+  }
+  return `Reason for AFK: *${afktext}*`;
+}
+//AFK TIME
+async function afkTime(userId) {
+  const user = await userData.findOne({ id: userId });
+   const currentTime = new Date();
+   const afkTime = user.afkTime; 
+   const timeDifference = currentTime - afkTime;
+  if (!afktime) {
+    return 'AFK time: 0s';
+  }
+  const totalSeconds = (timeDifference/1000);
+  const formattedTime = secondsToDhms(totalSeconds);
+  return `Time: ${formattedTime}`;
+}
+
 //Check AFK
 async function checkAfk(userId) {
   const user = await userData.findOne({ id: userId });
@@ -455,6 +492,33 @@ async function getAllPlugins() {
   return plugins;
 }
 
+//normal functions
+function secondsToDhms(seconds) {
+  const days = Math.floor(seconds / (3600 * 24));
+  const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  const result = [];
+  
+  if (days > 0) {
+    result.push(`${days}d`);
+  }
+
+  if (hours > 0) {
+    result.push(`${hours}h`);
+  }
+
+  if (minutes > 0) {
+    result.push(`${minutes}m`);
+  }
+
+  if (remainingSeconds > 0) {
+    result.push(`${remainingSeconds}s`);
+  }
+
+  return result.join(' ');
+}
 
 
 // Exporting the functions
@@ -464,6 +528,8 @@ module.exports = {
   unbanUser, // -------------------- UNBAN
   goAfk, // -------------------- GOING AFK
   checkAfk, // -------------------- CHECK AFK STATUS
+  afkText, //  -------------------- AFK TEXT
+  afkTime, //  -------------------- AFK TIME
   lock, // -------------------- LOCK COMMAND
   checkLock, // CHECK LOCK STATUS OF COMMAND
   unlock, // -------------------- UNLOCK COMMAND
