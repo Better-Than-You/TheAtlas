@@ -7,6 +7,27 @@ const {
 } = require("../MongoDB/MongoDB_Schema.js");
 const mongoose = require("mongoose");
 
+//Going Afk
+async function goAfk(userId, string) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {
+    await userData.create({ id: userId, afk: true, afkMessage: string, afkTime: new Date() });
+    return;
+  }
+  if (user.afk) {
+    await userData.findOneAndUpdate({ id: userId }, { $set: { afkTime: new Date() } })
+    return;
+  }
+  await userData.findOneAndUpdate({ id: userId }, { $set: { afk: true } }, { $set: { afkMessage: string } }, { $set: { afkTime: new Date() } });
+}
+//Check AFK
+async function checkAfk(userId) {
+  const user = await userData.findOne({ id: userId });
+  if (!user) {
+    return false;
+  }
+  return user.afk;
+}
 //Lock command
 async function lock(cmdId) {
   const command = await commandData.findOne({ id: cmdId });
@@ -441,6 +462,8 @@ module.exports = {
   banUser, //----------------------- BAN
   checkBan, // --------------------- CHECK BAN STATUS
   unbanUser, // -------------------- UNBAN
+  goAfk, // -------------------- GOING AFK
+  checkAfk, // -------------------- CHECK AFK STATUS
   lock, // -------------------- LOCK COMMAND
   checkLock, // CHECK LOCK STATUS OF COMMAND
   unlock, // -------------------- UNLOCK COMMAND
