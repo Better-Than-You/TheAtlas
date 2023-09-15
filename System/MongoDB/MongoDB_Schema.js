@@ -18,6 +18,7 @@ const GroupSchema = new mongoose.Schema({
   botSwitch: { type: Boolean, default: true },
   switchNSFW: { type: Boolean, default: false },
   switchWelcome: { type: Boolean, default: false },
+  
 });
 
 const UserSchema = new mongoose.Schema({
@@ -26,6 +27,10 @@ const UserSchema = new mongoose.Schema({
   ban: { type: Boolean, default: false },
   name: { type: String },
   addedMods: { type: Boolean, default: false },
+  afk: { type: Boolean, default: false },
+  afkMessage: { type: String, default: "" },
+  afkTime: { type: Date },
+  
 });
 
 const CoreSchema = new mongoose.Schema({
