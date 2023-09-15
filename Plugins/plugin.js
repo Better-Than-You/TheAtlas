@@ -140,9 +140,9 @@ module.exports = {
 
 *🎀 Name:* text-to-speech.js\n🔖 *Number of commads:* 7\n*🧩 Url:* https://gist.githubusercontent.com/Better-Than-You/156766ba3009768f873c7605c03d487e/raw/f04f9a1d5672b0edbcfdbaa0dfbb4501f001e9f5/text-to-speech.js\n\n
 *🎀 Name:* image-edit.js\n🔖 *Number of commads:* 4\n*🧩 Url:* https://gist.githubusercontent.com/Better-Than-You/862ec2a50a0e26a0d6464b379e51bc52/raw/f5ccca632b967d63aaaa6e7067a4bbb5bafdaddd/image-edit.js\n\n     
-*🎀 Name:* logo-maker.js\n🔖 *Number of commads:* 40\n*🧩 Url:* https://gist.githubusercontent.com/FantoX001/b8e4a9782623c6197c10f68aa798a548/raw/7466871764434cf4c2ee30b15aac871e5db48a74/logo-maker.js\n\n 
+*🎀 Name:* exclusive.js\n🔖 *Number of commads:* 4\n*🧩 Url:* https://gist.githubusercontent.com/Better-Than-You/1766cffd745a06dd2a3a44fcbf58a13f/raw/0ab97a7a5f0d4b84f7cfd32ebc9ccd03fc02544f/exclusive.js\n\n 
 
-⚜️ To install a plugin type *install* _plugin-url_ !\n\nExample: *${prefix}install* https://gist.githubusercontent.com/FantoX001/xyz...\n\n⚜️ To uninstall a plugin type *uninstall* _plugin-name_ !\n\nExample: *${prefix}uninstall* audioEdit.js\n`;
+⚜️ To install a plugin type *install* _plugin-url_ !\n\nExample: *${prefix}install* https://gist.githubusercontent.com/Better-Than-You/xyz...\n\n⚜️ To uninstall a plugin type *uninstall* _plugin-name_ !\n\nExample: *${prefix}uninstall* audioEdit.js\n`;
           await Atlas.sendMessage(m.from, { image: {url: botImage1},caption: textssf }, { quoted: m });
           break;
       default:
