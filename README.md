@@ -51,7 +51,7 @@ This is My-Atlas a bot modified and further developed by <a href="https://github
 </p>
 
 <p align="center" >
-    <a href="https://heroku.com/deploy?template=https://github.com/Better-Than-You/My-Atlas">
+    <a href="https://heroku.com/deploy?template=https://github.com/Better-Than-You/My-Atlas#AFK">
     <img src="https://www.herokucdn.com/deploy/button.png" width="160px" alt="Deploy on Heroku" >
     </a>
 
