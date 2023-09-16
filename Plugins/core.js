@@ -77,7 +77,7 @@ module.exports = {
               file.replace(".js", "").charAt(0).toUpperCase() +
               file.replace(".js", "").slice(1);
 
-            formatted += `⚪         *${capitalizedFile}*         ⚪\n`;
+            formatted += `『 *${capitalizedFile}* 』\n`;
             formatted += `\`\`\`${commands.join(", ")}\`\`\`\n\n\n`;
             
             

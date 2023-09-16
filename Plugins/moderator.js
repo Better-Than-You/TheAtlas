@@ -278,9 +278,7 @@ module.exports = {
       var banlistString = "";
       banlist.forEach((ban, index) => {
         banlistString += ban.id
-          ? `\n ${index + 1}\n╭─────────────◆\n│ *Name:* ${
-              ban.name
-            }\n│ *Tag:* @${ban.id.split("@")[0]}\n│ *Reason:* ${
+          ? `\n ${index + 1}\n╭─────────────◆\n│ *Tag:* @${ban.id.split("@")[0]}\n│ *Reason:* ${
               ban.reason
             }\n╰─────────────◆\n\n`
           : "";
@@ -313,10 +311,10 @@ module.exports = {
           );
         } else if (m.quoted) {
           var mentionedUser = m.quoted.sender;
-          var reason = args[0] ? 'No reason provided' : args[0];
+          var reason = !args[0] ? 'No reason provided' : args[0];
         } else {
           var mentionedUser = mentionByTag[0];
-          var reason = args[1] ? 'No reason provided' : args[1];
+          var reason = !args[1] ? 'No reason provided' : args[1];
         }
         chechSenderModStatus = await checkMod(m.sender);
         if (!chechSenderModStatus && !isCreator) {

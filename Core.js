@@ -68,8 +68,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
       checkAfk,
       goAfk,
       afkOff,
-      afkTime,
-      afkText,
+      afkData,
       checkAutoOn,
       checkLock,
       checkBan,
@@ -154,21 +153,29 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     var isGroupChatbotOn = await checkGroupChatbot(m.from);
     var botWorkMode = await getBotMode();
 
-    if (isAfk) {    
-      if (isCmd && inputCMD == 'afk') {
-        if (!text) {
-          afkText = '';
-        } else {
-        afkText = text; }
-        doReact('📵');       
-        goAfk(m.sender, afkText)
-        return m.reply(`The *Afk Message* has been successfully updated.\n\n*Afk timer has been reset*`)
-      }
-      const AFKmsg= afkText(m.sender);
-      const AFKtime= afkTime(m.sender);
-      afkOff(m.sender);      
-      return Atlas.sendMessage(m.sender, {text: `${m.pushName} has came back.\n${AFKmsg}\n${AFKtime}`}, {quoted: m})
+    if (isAfk) {        
+      deactAfk();
+      return;
+           
     }
+      // ---------------DeactAFk----------------
+      async function deactAfk() {
+        if (isCmd && inputCMD == 'afk') {
+          if (!text) {
+            afkText = '';
+          } else {
+          afkText = text; }
+          doReact('📵');       
+          goAfk(m.sender, afkText)
+          return m.reply(`The *Afk Message* has been successfully updated.\n\n*Afk timer has been reset*`)
+        }
+        await afkData(m.sender).then((res)=>{
+          Atlas.sendMessage(m.sender, {text: `${m.pushName} has came back.\n\n${res}`}, {quoted: m})
+    })
+        await afkOff(m.sender); 
+      }
+      // ----------------------------------
+
     if (isAutoOn && !isCmd) {
       if (body.includes('oooo')) {
         return doReact("😮");

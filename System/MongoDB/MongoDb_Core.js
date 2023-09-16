@@ -34,27 +34,18 @@ async function afkOff(userId) {
     await userData.findOneAndUpdate({ id: userId }, { $set: { afkTime: 0 } });    
     return;
 }
-//Afk text
-async function afkText(userId) {
-  const user = await userData.findOne({ id: userId });
-  const afktxt = user.afkMessage;
-  if (!afktxt) {
-    return '';
-  }
-  return `Reason for AFK: *${afktxt}*`;
-}
-//AFK TIME
-async function afkTime(userId) {
-  const user = await userData.findOne({ id: userId });
-   const currentTime = new Date();
-   const afkTime = user.afkTime; 
-   const timeDifference = currentTime - afkTime;
-  if (!afkTime) {
-    return 'AFK time: 0s';
-  }
-  const totalSeconds = (timeDifference/1000);
+//Afk Data
+async function afkData(userId) {
+  var user = await userData.findOne({ id: userId });
+  var afkText = user.afkMessage;
+  var afkTime = user.afkTime;
+  const timeDifference = currentTime - afkTime;
   const formattedTime = secondsToDhms(totalSeconds);
-  return `AFK time: ${formattedTime}`;
+  var currentTime = new Date();
+  if (afkText = 'nothing') {
+    return `Reason for AFK: *No reason provided*\n\nAFK time: ${formattedTime}`;
+  }
+  return `Reason for AFK: *${afktxt}*\n\nAFK time: ${formattedTime}`;
 }
 
 //Check AFK
@@ -156,7 +147,6 @@ async function checkBan(userId) {
 // UNBAN USER
 async function unbanUser(userId) {
   const user = await userData.findOne({ id: userId });
-  banReason = !string ? 'No reason provided' : string;
   if (!user) {
     await userData.create({ id: userId, ban: false, reason: '' });
     return;
@@ -165,7 +155,6 @@ async function unbanUser(userId) {
     return;
   }
   await userData.findOneAndUpdate({ id: userId }, { $set: { ban: false } });
-  await userData.findOneAndUpdate({ id: userId }, { $set: { reason: banReason} });
 }
 
 // ADD MOD
@@ -533,8 +522,7 @@ module.exports = {
   goAfk, // -------------------- GOING AFK
   checkAfk, // -------------------- CHECK AFK STATUS
   afkOff, // ----------------------- RETURNING FROM AFK
-  afkText, //  -------------------- AFK TEXT
-  afkTime, //  -------------------- AFK TIME
+  afkData, //----------------------- AFK DATA
   lock, // -------------------- LOCK COMMAND
   checkLock, // CHECK LOCK STATUS OF COMMAND
   unlock, // -------------------- UNLOCK COMMAND
