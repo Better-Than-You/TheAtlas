@@ -40,7 +40,7 @@ async function afkData(userId) {
   var afkText = user.afkMessage;
   var afkTime = user.afkTime;
   const timeDifference = currentTime - afkTime;
-  const formattedTime = secondsToDhms(totalSeconds);
+  const formattedTime = secondsToDhms(timeDifference/1000);
   var currentTime = new Date();
   if (afkText = 'nothing') {
     return `Reason for AFK: *No reason provided*\n\nAFK time: ${formattedTime}`;
