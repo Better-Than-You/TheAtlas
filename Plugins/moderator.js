@@ -158,7 +158,7 @@ module.exports = {
           console.log(err);
         }
         break;
-
+ 
       case "delmod":
       case "removemod":
         // Check if a user is mentioned
@@ -278,9 +278,7 @@ module.exports = {
       var banlistString = "";
       banlist.forEach((ban, index) => {
         banlistString += ban.id
-          ? `\n ${index + 1}\n╭─────────────◆\n│ *Name:* ${
-              ban.name
-            }\n│ *Tag:* @${ban.id.split("@")[0]}\n│ *Reason:* ${
+          ? `\n ${index + 1}\n╭─────────────◆\n│ *Tag:* @${ban.id.split("@")[0]}\n│ *Reason:* ${
               ban.reason
             }\n╰─────────────◆\n\n`
           : "";
@@ -302,7 +300,7 @@ module.exports = {
     };
     break;
     
-      case "ban":
+    case "ban":
       case "banuser":
         if (!text && !m.quoted) {
           await doReact("❌");
@@ -313,8 +311,10 @@ module.exports = {
           );
         } else if (m.quoted) {
           var mentionedUser = m.quoted.sender;
+          var reason = !text ? 'No reason provided' : text ;
         } else {
           var mentionedUser = mentionByTag[0];
+          var reason = !text ? 'No reason provided' : text.split(', ')[1];
         }
         chechSenderModStatus = await checkMod(m.sender);
         if (!chechSenderModStatus && !isCreator) {
@@ -344,7 +344,7 @@ module.exports = {
             { quoted: m }
           );
         } else {
-          banUser(userId).then(async () => {
+          banUser(userId, reason).then(async () => {
             await doReact("✅");
             await Atlas.sendMessage(
               m.from,
@@ -360,7 +360,6 @@ module.exports = {
         }
 
         break;
-
       case "unban":
       case "unbanuser":
         if (!text && !m.quoted) {

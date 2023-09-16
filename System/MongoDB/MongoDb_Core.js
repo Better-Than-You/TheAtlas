@@ -72,16 +72,18 @@ async function deactAuto(userId) {
   await userData.findOneAndUpdate({ id: userId }, { $set: { react: false } });
 }
 // BAN USER
-async function banUser(userId) {
+async function banUser(userId, string) {
   const user = await userData.findOne({ id: userId });
+  banReason = !string ? 'No reason provided' : string;
   if (!user) {
-    await userData.create({ id: userId, ban: true });
+    await userData.create({ id: userId, ban: true, reason: banReason });
     return;
   }
   if (user.ban) {
     return;
   }
   await userData.findOneAndUpdate({ id: userId }, { $set: { ban: true } });
+  await userData.findOneAndUpdate({ id: userId }, { $set: { reason: banReason } });
 }
 
 // CHECK BAN STATUS
@@ -97,7 +99,7 @@ async function checkBan(userId) {
 async function unbanUser(userId) {
   const user = await userData.findOne({ id: userId });
   if (!user) {
-    await userData.create({ id: userId, ban: false });
+    await userData.create({ id: userId, ban: false, reason: '' });
     return;
   }
   if (!user.ban) {
@@ -105,7 +107,6 @@ async function unbanUser(userId) {
   }
   await userData.findOneAndUpdate({ id: userId }, { $set: { ban: false } });
 }
-
 // ADD MOD
 async function addMod(userId) {
   const ownerlist = global.owner;
