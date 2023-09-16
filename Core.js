@@ -154,9 +154,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     var botWorkMode = await getBotMode();
 
     if (isAfk) {        
-      deactAfk();
-      return;
-           
+      deactAfk();          
     }
       // ---------------DeactAFk----------------
       async function deactAfk() {
@@ -173,6 +171,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
           Atlas.sendMessage(m.sender, {text: `${m.pushName} has came back.\n\n${res}`}, {quoted: m})
     })
         await afkOff(m.sender); 
+        return;
       }
       // ----------------------------------
 
