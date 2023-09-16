@@ -166,13 +166,14 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
           doReact('📵');       
           goAfk(m.sender, afkText)
           return m.reply(`The *Afk Message* has been successfully updated.\n\n*Afk timer has been reset*`)
+        } else {
+          await afkData(m.sender).then((res)=>{
+            Atlas.sendMessage(m.sender, {text: `${m.pushName} has came back.\n\n${res}`}, {quoted: m})})
+            await afkOff(m.sender); 
+            return;
         }
-        await afkData(m.sender).then((res)=>{
-          Atlas.sendMessage(m.sender, {text: `${m.pushName} has came back.\n\n${res}`}, {quoted: m})
-    })
-        await afkOff(m.sender); 
-        return;
-      }
+    }
+      
       // ----------------------------------
 
     if (isAutoOn && !isCmd) {
