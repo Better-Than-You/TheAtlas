@@ -99,7 +99,6 @@ module.exports = {
     }
   ) => {
     switch (inputCMD) {
-       
       case "charlist":
       await doReact("⚜️");
       const chartext =  "```0. Luffy\n1. Naruto\n2. Ichigo\n3. Gintoki\n4. Zero Two\n5. Chika\n6. Miku\n7. Marin\n8. Ayanokoji\n9. Ruka\n10. Mizuhara\n11. Rem\n12. Sui\n13. Kaguya\n14. Yumeko\n15. Kurumi\n16. Mai\n17. Yor\n18. Shinobu\n19. Eiko```\n\n_To set character, use *-setchar [number]*_";

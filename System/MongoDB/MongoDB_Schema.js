@@ -18,6 +18,7 @@ const GroupSchema = new mongoose.Schema({
   botSwitch: { type: Boolean, default: true },
   switchNSFW: { type: Boolean, default: false },
   switchWelcome: { type: Boolean, default: false },
+  switchLevel: { type: Boolean, default: true },
 });
 
 const UserSchema = new mongoose.Schema({
@@ -46,13 +47,22 @@ const CommandSchema = new mongoose.Schema({
   lock: {type: Boolean, default: false},
 });
 
+const PlayerSchema = new.mongoose.Schema({
+  id: { type: String, unique: true, required: true },
+  name: { type: String },    
+  level: { type: Number, default: 0 },
+  xp: {type: Number, default: 0 },
+  balance: {type: Number, default: 100 },
+  last_daily_claim: { type: Date, default: new Date() },  
+});
 
 
 const userData = db1.model("UserData", UserSchema);
+const playerData = db1.model("PlayerData", PlayerSchema);
 const groupData = db1.model("GroupData", GroupSchema);
 const systemData = db2.model("SystemData", CoreSchema);
 const pluginData = db2.model("PluginData", PluginSchema);
 const commandData = db2.model("CommandData", CommandSchema);
 
 
-module.exports = { userData, groupData, systemData, pluginData, commandData };
+module.exports = { userData, groupData, systemData, pluginData, commandData, playerData };

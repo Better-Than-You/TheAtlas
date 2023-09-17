@@ -4,9 +4,113 @@ const {
   systemData,
   pluginData,
   commandData,
+  playerData,
 } = require("../MongoDB/MongoDB_Schema.js");
 const mongoose = require("mongoose");
 
+async function addBalance(playerId, berries) {
+  const user = await playerData.findOne({ id: playerId });   
+  await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + berries } });
+}
+//-----------------------------------------
+async function deductBalance(playerId, berries) {
+  const user = await playerData.findOne({ id: playerId });   
+  await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance - berries } });
+}
+//-----------------------------------------
+async function giveXP(playerId) {
+  try {
+    const randomXP = Math.floor(Math.random() * 3) + 1;
+    const user = await playerData.findOne(playerId);
+    if(!user) {
+      return;
+    }
+    await playerData.findOneAndUpdate({id: playerId}, { $set: { xp: user.xp + randomXP }})
+  } catch (error) {
+    console.error('Error giving XP:', error);
+    throw error;
+  }
+
+}
+//-----------------------------------------
+async function checkLevelUp(playerId) {
+  const user = await playerData.findOne(playerId);
+  if (!user) {
+    return false;
+  }
+  const currentLevel = user.level;
+  const currentXP = user.xp;
+  function calculateRequiredXP(level) {
+    switch (level) {
+      case 0:
+        return 100;
+        break;
+      case 1:
+        return 300;
+        break;
+      case 2:
+        return 500;
+        break;
+      case 3:
+        return 1000;
+        break;
+      case 4: 
+        return 3000;
+        break;
+      case 5:
+        return 10000;
+      break;
+      default:
+        break;
+    }
+  }
+
+  const requiredXP = calculateRequiredXP(currentLevel);
+
+  if (currentXP >= requiredXP) {
+    // Level up the user
+    await playerData.findOneAndUpdate({id: playerId}, { $set: { level: user.level += 1 }});
+    await playerData.findOneAndUpdate({id: playerId}, { $set: { xp: currentXP - requiredXP }});
+    return true;
+  } else {
+    return false;
+  }
+}
+//-----------------------------------------
+//check Level switch
+async function checkLevelSwitch(groupID) {
+  const group = await groupData.findOne({ id: groupID });
+  if (!group) {
+    return false;
+  }
+  return group.switchLevel;
+}
+//--------------------------
+//Activate RPG
+async function actRpg(groupId) {
+  const group = await groupData.findOne({ id: groupId });
+  if (!group) {
+    await groupData.create({ id: groupId, switchLevel: true });
+    return;
+  }
+  if (group.switchLevel) {
+    return;
+  }
+  await groupData.findOneAndUpdate({ id: groupId }, { $set: { switchLevel: true } });
+}
+
+//-----------------------
+async function deactRpg(groupId) {
+  const group = await groupData.findOne({ id: groupId });
+  if (!group) {
+    await groupData.create({ id: groupId, switchLevel: false });
+    return;
+  }
+  if (!group.switchLevel) {
+    return;
+  }
+  await groupData.findOneAndUpdate({ id: groupId }, { $set: { switchLevel: false } });
+}
 //Lock command
 async function lock(cmdId) {
   const command = await commandData.findOne({ id: cmdId });
@@ -439,6 +543,11 @@ async function getAllPlugins() {
 
 // Exporting the functions
 module.exports = {
+  checkLevelSwitch,
+  addBalance,
+  deductBalance,
+  giveXP,
+  checkLevelUp,
   banUser, //----------------------- BAN
   checkBan, // --------------------- CHECK BAN STATUS
   unbanUser, // -------------------- UNBAN
