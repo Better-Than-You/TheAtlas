@@ -548,6 +548,8 @@ module.exports = {
   deductBalance,
   giveXP,
   checkLevelUp,
+  actRpg,
+  deactRpg,
   banUser, //----------------------- BAN
   checkBan, // --------------------- CHECK BAN STATUS
   unbanUser, // -------------------- UNBAN
