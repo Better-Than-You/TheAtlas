@@ -47,7 +47,7 @@ const CommandSchema = new mongoose.Schema({
   lock: {type: Boolean, default: false},
 });
 
-const PlayerSchema = new.mongoose.Schema({
+const PlayerSchema = new mongoose.Schema({
   id: { type: String, unique: true, required: true },
   name: { type: String },    
   level: { type: Number, default: 0 },
