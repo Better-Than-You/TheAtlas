@@ -21,7 +21,7 @@ async function deductBalance(playerId, berries) {
 async function giveXP(playerId) {
   try {
     const randomXP = Math.floor(Math.random() * 3) + 1;
-    const user = await playerData.findOne(playerId);
+    const user = await playerData.findOne({id: playerId});
     if(!user) {
       return;
     }
@@ -34,7 +34,7 @@ async function giveXP(playerId) {
 }
 //-----------------------------------------
 async function checkLevelUp(playerId) {
-  const user = await playerData.findOne(playerId);
+  const user = await playerData.findOne({id: playerId});
   if (!user) {
     return false;
   }
