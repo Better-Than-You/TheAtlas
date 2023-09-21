@@ -68,7 +68,6 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
       checkAfk,
       goAfk,
       afkOff,
-      afkData,
       checkAutoOn,
       checkLock,
       checkBan,
@@ -80,6 +79,9 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
       checkAntilink,
       checkGroupChatbot,
     } = require("./System/MongoDB/MongoDb_Core");
+    const {
+      userData,
+    } = require("./System/MongoDB/MongoDB_Schema");
     async function doReact(emoji) {
       let reactm = {
         react: {
@@ -153,28 +155,23 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     var isGroupChatbotOn = await checkGroupChatbot(m.from);
     var botWorkMode = await getBotMode();
 
-    if (isAfk) {        
-      deactAfk();          
-    }
-      // ---------------DeactAFk----------------
-      async function deactAfk() {
-        if (isCmd && inputCMD == 'afk') {
-          if (!text) {
-            afkText = '';
-          } else {
-          afkText = text; }
-          doReact('📵');       
-          goAfk(m.sender, afkText)
-          return m.reply(`The *Afk Message* has been successfully updated.\n\n*Afk timer has been reset*`)
-        } else {
-          await afkData(m.sender).then((res)=>{
-            Atlas.sendMessage(m.sender, {text: `${m.pushName} has came back.\n\n${res}`}, {quoted: m})})
-            await afkOff(m.sender); 
-            return;
-        }
-    }
-      
-      // ----------------------------------
+   // -----------------AFk------------------
+
+   if (isAfk) {        
+       user = await userData.findOne({ id: m.sender });
+       currentTime = new Date();
+       const timeDifference = currentTime - afkTime;
+       const formattedTime = secondsToDhms(timeDifference/1000);      
+       if (user.afkMessage = '') {
+         await Atlas.sendMessage(m.from, {text: `Reason for AFK: *No reason provided*\n\nAFK time: ${formattedTime}` }, {quoted: m});
+         await afkOff(m.sender)
+       } else {
+         await Atlas.sendMessage(m.from, {text: `Reason for AFK: *${user.afkMessage}*\n\nAFK time: ${formattedTime}`}, {quoted: m});
+         await afkOff(m.sender);
+       }
+   }
+
+   // ----------------------------------
 
     if (isAutoOn && !isCmd) {
       if (body.includes('oooo')) {
@@ -394,3 +391,31 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     if (!e.includes("cmd.start")) console.error(e);
   }
 };
+
+//normal functions
+function secondsToDhms(seconds) {
+  const days = Math.floor(seconds / (3600 * 24));
+  const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  const result = [];
+  
+  if (days > 0) {
+    result.push(`${days}d`);
+  }
+
+  if (hours > 0) {
+    result.push(`${hours}h`);
+  }
+
+  if (minutes > 0) {
+    result.push(`${minutes}m`);
+  }
+
+  if (remainingSeconds > 0) {
+    result.push(`${remainingSeconds}s`);
+  }
+
+  return result.join(' ');
+}

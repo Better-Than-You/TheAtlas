@@ -34,19 +34,6 @@ async function afkOff(userId) {
     await userData.findOneAndUpdate({ id: userId }, { $set: { afkTime: 0 } });    
     return;
 }
-//Afk Data
-async function afkData(userId) {
-  var user = await userData.findOne({ id: userId });
-  var afkText = user.afkMessage;
-  var afkTime = user.afkTime;
-  const timeDifference = currentTime - afkTime;
-  const formattedTime = secondsToDhms(timeDifference/1000);
-  var currentTime = new Date();
-  if (afkText = 'nothing') {
-    return `Reason for AFK: *No reason provided*\n\nAFK time: ${formattedTime}`;
-  }
-  return `Reason for AFK: *${afktxt}*\n\nAFK time: ${formattedTime}`;
-}
 
 //Check AFK
 async function checkAfk(userId) {
@@ -485,33 +472,7 @@ async function getAllPlugins() {
   return plugins;
 }
 
-//normal functions
-function secondsToDhms(seconds) {
-  const days = Math.floor(seconds / (3600 * 24));
-  const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
 
-  const result = [];
-  
-  if (days > 0) {
-    result.push(`${days}d`);
-  }
-
-  if (hours > 0) {
-    result.push(`${hours}h`);
-  }
-
-  if (minutes > 0) {
-    result.push(`${minutes}m`);
-  }
-
-  if (remainingSeconds > 0) {
-    result.push(`${remainingSeconds}s`);
-  }
-
-  return result.join(' ');
-}
 
 
 // Exporting the functions
@@ -522,7 +483,6 @@ module.exports = {
   goAfk, // -------------------- GOING AFK
   checkAfk, // -------------------- CHECK AFK STATUS
   afkOff, // ----------------------- RETURNING FROM AFK
-  afkData, //----------------------- AFK DATA
   lock, // -------------------- LOCK COMMAND
   checkLock, // CHECK LOCK STATUS OF COMMAND
   unlock, // -------------------- UNLOCK COMMAND
