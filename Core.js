@@ -160,7 +160,7 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
    if (isAfk) {        
        user = await userData.findOne({ id: m.sender });
        currentTime = new Date();
-       const timeDifference = currentTime - afkTime;
+       const timeDifference = currentTime - user.afkTime;
        const formattedTime = secondsToDhms(timeDifference/1000);      
        if (user.afkMessage = '') {
          await Atlas.sendMessage(m.from, {text: `Reason for AFK: *No reason provided*\n\nAFK time: ${formattedTime}` }, {quoted: m});
