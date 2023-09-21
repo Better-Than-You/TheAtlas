@@ -5,27 +5,179 @@ const {
   pluginData,
   commandData,
   playerData,
+  gameData,
 } = require("../MongoDB/MongoDB_Schema.js");
 const mongoose = require("mongoose");
-
-async function addBalance(playerId, berries) {
-  const user = await playerData.findOne({ id: playerId });   
-  await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + berries } });
+//---------------------------------
+async function checkHuntOn(hostId) {
+  const host = await gameData.findOne({ id: hostId }, { gameType: 'Hunt' });
+  if (!host) {
+    return false;
+  }
+  return true;
 }
-//-----------------------------------------
-async function deductBalance(playerId, berries) {
-  const user = await playerData.findOne({ id: playerId });   
-  await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance - berries } });
+//---------------------------------
+async function hunt(location, playerId) {
+  // Define possible hunt locations and their respective money ranges
+  const huntLocations = {
+    forest: { min: 433, max: 650 },
+    field: { min: 50, max: 500 },
+    mountain: { min: 200, max: 1100 },
+    cave: { min: 500, max: 900 },
+    fridge: { min: 150, max: 575 },
+    sink: { min: 250, max: 600 },
+  };
+  const randomChance = Math.random();
+  const { min, max } = huntLocations[location];
+  // Get the money range for the selected location  
+  switch (location) {
+    case 'area51':
+      user = await playerData.findOne({ id: playerId });
+      if (randomChance < 0.8) {
+        moneyEarned = (user.balance > 2000)? -2000 : -(user.balance);    //fail
+      } else if (0.8 < randomChance < 0.89) {
+        moneyEarned = 1;           
+      } else {
+        moneyEarned = Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + moneyEarned } }, { $set: { lastHunted: new Date() } });
+      await gameData.findOneAndDelete({ host: playerId }, { gameType: 'Hunt' });
+        if (moneyEarned < 0) {
+          return `You got caught while hunting by the govt. and paid 5000 ฿ as a fine!`;
+        }
+        if (moneyEarned = 1) {      
+          return `You found ${moneyEarned} ฿ while hunting in the ${location[0].toUpperCase() + location.slice(1)}.`;
+        }
+        return `You found the secret govt. was hiding all these decades and got ${moneyEarned} ฿.`;
+      break;
+      break;
+    case "forest":
+      user = await playerData.findOne({ id: playerId });
+      if (randomChance < 0.2) {
+        moneyEarned = (user.balance > 1000)? -1000 : -(user.balance);
+      } else {
+        moneyEarned = Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + moneyEarned } }, { $set: { lastHunted: new Date() } });
+      await gameData.findOneAndDelete({ host: playerId }, { gameType: 'Hunt' });
+        if (moneyEarned > 0) {
+          return `You found ${moneyEarned} ฿ while hunting in the ${location[0].toUpperCase() + location.slice(1)}.`;         
+        }
+        return `You got lost in the forest and lost your wallet! After a while you found it but there was some money missing...`;
+      break;
+    case 'field':
+      user = await playerData.findOne({ id: playerId });
+      moneyEarned = Math.floor(Math.random() * (max - min + 1)) + min;
+      await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + moneyEarned } }, { $set: { lastHunted: new Date() } });
+      await gameData.findOneAndDelete({ host: playerId }, { gameType: 'Hunt' });
+      return `You found ${moneyEarned} ฿ while hunting in the ${location[0].toUpperCase() + location.slice(1)}.`;         
+      break;
+    case 'mountain':
+      user = await playerData.findOne({ id: playerId });
+      if (randomChance < 0.6) {
+        moneyEarned = (user.balance > 3000)? -3000 : -(user.balance);    //fail
+      } else {
+        moneyEarned = Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + moneyEarned } }, { $set: { lastHunted: new Date() } });
+      await gameData.findOneAndDelete({ host: playerId }, { gameType: 'Hunt' });
+        if (moneyEarned > 0) {
+          return `You found ${moneyEarned} ฿ while hunting in the ${location[0].toUpperCase() + location.slice(1)}.`;         
+        }
+        return `You fell from the mountain while climbing and paid a large amount of ฿ on medical bills.`;
+      break;
+    case 'cave':
+      user = await playerData.findOne({ id: playerId });
+      if (randomChance < 0.4) {
+        moneyEarned = (user.balance > 2000)? -2000 : -(user.balance);    //fail
+      } else {
+        moneyEarned = Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + moneyEarned } }, { $set: { lastHunted: new Date() } });
+      await gameData.findOneAndDelete({ host: playerId }, { gameType: 'Hunt' });
+        if (moneyEarned > 0) {
+          return `You found ${moneyEarned} ฿ while hunting in the ${location[0].toUpperCase() + location.slice(1)}.`;         
+        }
+        return `While searching in the cave, a bear came out and started to chase you. You somehow got out but lost some ฿ on the way back.`;
+      break;
+    case 'sink':
+      user = await playerData.findOne({ id: playerId });
+      if (randomChance < 0.3) {
+        moneyEarned = (user.balance > 800)? -800 : -(user.balance);    //fail
+      } else {
+        moneyEarned = Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + moneyEarned } }, { $set: { lastHunted: new Date() } });
+      await gameData.findOneAndDelete({ host: playerId }, { gameType: 'Hunt' });
+        if (moneyEarned > 0) {
+          return `You found ${moneyEarned} ฿ while hunting in the ${location[0].toUpperCase() + location.slice(1)}.`;         
+        }
+        return `While searching in the sink, a cockroach flew and got into your eyes. You paid some ฿ on the medical bills.`;
+      break;
+    case 'fridge':
+      user = await playerData.findOne({ id: playerId });
+      if (randomChance < 0.2) {
+        moneyEarned = (user.balance > 500)? -500 : -(user.balance);    //fail
+      } else {
+        moneyEarned = Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + moneyEarned } }, { $set: { lastHunted: new Date() } });
+      await gameData.findOneAndDelete({ host: playerId }, { gameType: 'Hunt' });
+        if (moneyEarned > 0) {
+          return `You found ${moneyEarned} ฿ while hunting in the ${location[0].toUpperCase() + location.slice(1)}.`;         
+        }
+        return `While searching in the fridge, you accidentally expired food and got sick. You paid ฿ on the medical bills.`;
+      break;
+    default:
+      break;
+  }
+
+
+
+}
+//---------------------------------
+async function rob(playerId) {
+  const user = await playerData.findOne({ id: playerId });
+  // Calculate a random number between 0 and 1 to represent the chance of success
+  const randomChance = Math.random();
+  if (randomChance <= 0.7) {
+    const stolenAmount = Math.floor(Math.random() * user.coins);
+    await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.coins - stolenAmount } });
+    return stolenAmount;
+  } else {
+    stolenAmount = -1000;
+    await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.coins - stolenAmount } });
+    return stolenAmount;
+  }
+}
+
+//----------------------------------
+async function canRob(playerId) {
+    const victim = await playerData.findOne({ id: playerId1 });
+    if (!victim) {
+      return false;
+    }
+    const currentTime = new Date();
+    if (currentTime - user.last_robbed >= 5 * 60 * 1000) {//5min
+      await playerData.findOneAndUpdate({ id: playerId }, { $set: { last_robbed: new Date() } });
+      return true;
+    }
+    return false;
+}
+//---------------------------------
+async function updateBalance(playerId, berries) {
+  const user = await playerData.findOne({ id: playerId });
+  await playerData.findOneAndUpdate({ id: playerId }, { $set: { balance: user.balance + berries } });
 }
 //-----------------------------------------
 async function giveXP(playerId) {
   try {
     const randomXP = Math.floor(Math.random() * 3) + 1;
-    const user = await playerData.findOne({id: playerId});
-    if(!user) {
+    const user = await playerData.findOne({ id: playerId });
+    if (!user) {
       return;
     }
-    await playerData.findOneAndUpdate({id: playerId}, { $set: { xp: user.xp + randomXP }})
+    await playerData.findOneAndUpdate({ id: playerId }, { $set: { xp: user.xp + randomXP } })
   } catch (error) {
     console.error('Error giving XP:', error);
     throw error;
@@ -34,7 +186,7 @@ async function giveXP(playerId) {
 }
 //-----------------------------------------
 async function checkLevelUp(playerId) {
-  const user = await playerData.findOne({id: playerId});
+  const user = await playerData.findOne({ id: playerId });
   if (!user) {
     return false;
   }
@@ -54,12 +206,12 @@ async function checkLevelUp(playerId) {
       case 3:
         return 1000;
         break;
-      case 4: 
+      case 4:
         return 3000;
         break;
       case 5:
         return 10000;
-      break;
+        break;
       default:
         break;
     }
@@ -69,8 +221,8 @@ async function checkLevelUp(playerId) {
 
   if (currentXP >= requiredXP) {
     // Level up the user
-    await playerData.findOneAndUpdate({id: playerId}, { $set: { level: user.level += 1 }});
-    await playerData.findOneAndUpdate({id: playerId}, { $set: { xp: currentXP - requiredXP }});
+    await playerData.findOneAndUpdate({ id: playerId }, { $set: { level: user.level += 1 } });
+    await playerData.findOneAndUpdate({ id: playerId }, { $set: { xp: currentXP - requiredXP } });
     return true;
   } else {
     return false;
@@ -225,7 +377,7 @@ async function addMod(userId) {
   if (user.addedMods) {
     return;
   }
-  await userData.findOneAndUpdate({ id: userId },{ $set: { addedMods: true } });
+  await userData.findOneAndUpdate({ id: userId }, { $set: { addedMods: true } });
 }
 
 // CHECK MOD STATUS
@@ -543,13 +695,16 @@ async function getAllPlugins() {
 
 // Exporting the functions
 module.exports = {
+  rob,
+  canRob,
   checkLevelSwitch,
-  addBalance,
-  deductBalance,
+  updateBalance,
   giveXP,
   checkLevelUp,
   actRpg,
   deactRpg,
+  checkHuntOn,
+  hunt,
   banUser, //----------------------- BAN
   checkBan, // --------------------- CHECK BAN STATUS
   unbanUser, // -------------------- UNBAN

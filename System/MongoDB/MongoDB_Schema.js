@@ -50,13 +50,25 @@ const CommandSchema = new mongoose.Schema({
 const PlayerSchema = new mongoose.Schema({
   id: { type: String, unique: true, required: true },
   name: { type: String },    
+  image: { type: String },
   level: { type: Number, default: 0 },
   xp: {type: Number, default: 0 },
   balance: {type: Number, default: 100 },
   last_daily_claim: { type: Date, default: new Date() },  
+  switchRob: { type: Boolean, default: true },
+  last_robbed: { type: Date, default: new Date() },
+  lastHunted: { type: Date },
 });
 
+const GameSchema = new mongoose.Schema({
+    host: { type: String, required: true },
+    players: [{ type: String }],
+    gameType: { type: String, required: true },
+    gameLocation: { type: String },
+    huntLocations: { type: Array },
+});
 
+const gameData = db1.model("GameData", GameSchema);
 const userData = db1.model("UserData", UserSchema);
 const playerData = db1.model("PlayerData", PlayerSchema);
 const groupData = db1.model("GroupData", GroupSchema);
@@ -65,4 +77,4 @@ const pluginData = db2.model("PluginData", PluginSchema);
 const commandData = db2.model("CommandData", CommandSchema);
 
 
-module.exports = { userData, groupData, systemData, pluginData, commandData, playerData };
+module.exports = { userData, groupData, systemData, pluginData, commandData, playerData, gameData };

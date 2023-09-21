@@ -78,9 +78,11 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
       checkBanGroup,
       checkAntilink,
       checkGroupChatbot,
+      updateBalance,
     } = require("./System/MongoDB/MongoDb_Core");
     const {
       playerData,
+      gameData,
     } = require("./System/MongoDB/MongoDB_Schema");
     async function doReact(emoji) {
       let reactm = {
@@ -91,6 +93,14 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
       };
       await Atlas.sendMessage(m.from, reactm);
     }
+    // async function deleteRooms() {
+    //   const now = new Date();
+    //   const roomsToDelete = await gameData.find({ gameType: 'Hunt' }, { gameTime: { $lt: now } }).toArray();
+    //   for ( const room of roomsToDelete ) {
+    //     await Atlas.sendMessage(room.gameLocation, {text: `The hunt is over and you got *nothing*. What a coward!`}, {quoted: room.host});
+    //     await gameData.delete({ host: room.host });
+    //   }
+    // }
     const cmdName = response
       .slice(prefix.length)
       .trim()
@@ -155,8 +165,30 @@ module.exports = async (Atlas, m, commands, chatUpdate) => {
     var botWorkMode = await getBotMode();
     var isLevelOn = await checkLevelSwitch(m.from);
     var isLeveledUp = await checkLevelUp(m.sender);
-
-      if(m.isGroup && isLevelOn) {
+    var isHuntOn = await checkHunt(m.sender);
+    
+    //-----------------------------------
+    if (isHuntOn) {
+      const host = await gameData.fidnOne({ id: m.sender }, { gameType: 'Hunt' });
+      if (m.from == host.gameLocation) {
+        userChoice = body.trim().toLowerCase();
+        if (!host.huntLocations.includes(userChoice)) {
+          await doReact('❌');
+          await gameData.findOneAndDelete({ id: m.sender }, { gameType: 'Hunt' });
+          let oneMinLater = new Date();
+          await oneMinLater.setTime(oneMinLater.getTime() + ( 60 * 1000 ))
+          await playerData.findOneAndUpdate({ id: playerId }, { $set: { lastHunted: oneMinLater} });
+          return m.reply(`That's not a valid hunt location, you dumbass!`);
+        } else {
+          var mes1 = await hunt(userChoice);
+          await doReact('💰');
+          await Atlas.sendMessage(m.from, {text: mes1 }, {quoted: m});
+        }
+      }
+    }
+    
+    //-----------------------------------
+    if(m.isGroup && isLevelOn) {
         user = await playerData.findOne({ id: m.sender})
         if (user) {
           await giveXP(m.sender);
