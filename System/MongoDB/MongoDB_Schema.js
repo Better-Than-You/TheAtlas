@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
   name: { type: String },
   addedMods: { type: Boolean, default: false },
   afk: { type: Boolean, default: false },
-  afkMessage: { type: String, default: '' },
+  afkText: { type: String },
   afkTime: { type: Date },
   
 });

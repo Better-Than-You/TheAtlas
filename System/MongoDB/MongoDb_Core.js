@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 async function goAfk(userId, string) {
   const user = await userData.findOne({ id: userId });
   if (!user) {
-    await userData.create({ id: userId, afk: true, afkMessage: string, afkTime: new Date() });
+    await userData.create({ id: userId, afk: true, afkText: string, afkTime: new Date() });
     return;
   }
   if (user.afk) {
@@ -19,18 +19,18 @@ async function goAfk(userId, string) {
     return;
   }
   await userData.findOneAndUpdate({ id: userId }, { $set: { afk: true } });
-  await userData.findOneAndUpdate({ id: userId }, { $set: { afkMessage: string } });
+  await userData.findOneAndUpdate({ id: userId }, { $set: { afkText: string } });
   await userData.findOneAndUpdate({ id: userId }, { $set: { afkTime: new Date() } });
 }
 //Afkoff
 async function afkOff(userId) {
   const user = await userData.findOne({ id: userId });
   if (!user) {    
-    await userData.create({ id: userId, afk: false, afkMessage: '', afkTime: 0 });
+    await userData.create({ id: userId, afk: false, afkText: '', afkTime: 0 });
     return;
   }
     await userData.findOneAndUpdate({ id: userId }, { $set: { afk: false } });
-    await userData.findOneAndUpdate({ id: userId }, { $set: { afkMessage: '' } });
+    await userData.findOneAndUpdate({ id: userId }, { $set: { afkText: '' } });
     await userData.findOneAndUpdate({ id: userId }, { $set: { afkTime: 0 } });    
     return;
 }
